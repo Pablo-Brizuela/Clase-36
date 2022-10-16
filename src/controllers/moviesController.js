@@ -4,6 +4,7 @@ const sequelize = db.sequelize;
 const { Op } = require("sequelize");
 const moment = require('moment');
 const fetch = require('node-fetch');
+const { response } = require('express');
 
 
 //Aqui tienen otra forma de llamar a cada uno de los modelos
@@ -56,8 +57,13 @@ const moviesController = {
             });
     },
     //Aqui debo modificar para crear la funcionalidad requerida
-    'buscar': (req, res) => {
-        
+    'buscar': async (req, res) => {
+        fetch("http://www.omdbapi.com/?apikey=d4e35e92&t=Doctor+Strange")
+        .then (response => response.json()) 
+        .then (movies => {
+            return res.render("moviesDetail.ejs", {movies})
+        })
+
     },
     //Aqui dispongo las rutas para trabajar con el CRUD
     add: function (req, res) {
