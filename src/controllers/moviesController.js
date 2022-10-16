@@ -60,8 +60,8 @@ const moviesController = {
     'buscar': async (req, res) => {
         fetch("http://www.omdbapi.com/?apikey=d4e35e92&t=Doctor+Strange")
         .then (response => response.json()) 
-        .then (movies => {
-            return res.render("moviesDetail.ejs", {movies})
+        .then (movie => {
+            return res.render("moviesDetail.ejs", {movie})
         })
 
     },
