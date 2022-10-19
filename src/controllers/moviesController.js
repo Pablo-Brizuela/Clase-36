@@ -61,13 +61,29 @@ const moviesController = {
         fetch("http://www.omdbapi.com/?apikey=d4e35e92&t=Doctor+Strange")
         .then (response => response.json()) 
         
-        .then (data => {
-        let movie = {
-           /*  agregar acá! */
-
-        } 
-            return res.render("moviesDetail.ejs", {movie})
-        })
+        .then(
+            movie=>{
+                if (movie===null){
+                    fetch('http://www.omdbapi.com/?apikey='+apiKey+'&t='+req.body.movieSearched)
+                    .then(response=>response.json())
+                    .then(
+                        movieFetched=>{
+                            const movieToShow =
+                            res.render('moviesDetail.ejs', {movie: {
+                                    title:movieFetched.Title,
+                                    rating:movieFetched.Ratings.find(e=>e.Source="Rotten Tomatoes").Value,
+                                    awards:movieFetched.Awards,
+                                    length:movieFetched.Runtime.split(" ")[0],
+                                    release_date:movieFetched.Released
+                                }
+                            });
+                        }
+                    )
+                }else{
+                    res.render('moviesDetail.ejs', {movie});
+                }
+            }
+        )
 
     },
     //Aqui dispongo las rutas para trabajar con el CRUD
